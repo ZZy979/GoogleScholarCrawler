@@ -5,4 +5,4 @@
 __pycache__/
 
 /config.ini
-/run.sh
+/run_citation.sh

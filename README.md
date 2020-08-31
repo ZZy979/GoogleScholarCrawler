@@ -10,7 +10,7 @@
 
 ## 论文引用数爬虫
 从数据库读取论文标题，搜索并爬取论文的引用数
-- 运行：`scrapy crawl citation`
+- 运行：`scrapy crawl -a lower=lower_id -a upper=upper_id citation`
 - 配置文件：
 ```ini
 [MySQL]

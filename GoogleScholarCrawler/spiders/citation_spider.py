@@ -13,14 +13,20 @@ class CitationSpider(scrapy.Spider):
     handle_httpstatus_list = [403, 429]
     url = 'https://scholar.google.com/scholar'
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
         self.mysql, self.table = config.get_mysql()
 
     def start_requests(self):
         conn = pymysql.connect(**self.mysql)
         cursor = conn.cursor(pymysql.cursors.DictCursor)
-        cursor.execute(f'SELECT id, title FROM `{self.table}` WHERE finished = 0 LIMIT 100')
+        size = cursor.execute(
+            'SELECT id, title FROM `{}`'
+            ' WHERE id BETWEEN %s AND %s AND finished = 0'
+            ' ORDER BY id LIMIT 100'.format(self.table),
+            (self.lower, self.upper)
+        )
+        self.logger.info('lower = %s, upper = %s, size = %s', self.lower, self.upper, size)
         for r in cursor:
             yield scrapy.Request(
                 self.url + '?' + urlencode({'q': r['title']}), self.parse,
