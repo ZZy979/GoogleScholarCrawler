@@ -10,6 +10,7 @@ from GoogleScholarCrawler.items import PaperCitationItem
 
 class CitationSpider(scrapy.Spider):
     name = 'citation'
+    handle_httpstatus_list = [403, 429]
     url = 'https://scholar.google.com/scholar'
 
     def __init__(self):
@@ -27,9 +28,9 @@ class CitationSpider(scrapy.Spider):
             )
 
     def parse(self, response, **kwargs):
-        paper_id = response.request.meta['paper_id']
+        paper_id = response.meta['paper_id']
         if response.status != 200 or not response.css('#gs_res_ccl'):
-            self.logger.info('id = %s 又被封了。。', paper_id)
+            self.logger.info('id = %s 又被封了。。 status = %s', paper_id, response.status)
             yield PaperCitationItem(paper_id=paper_id, status='blocked')
             return
 

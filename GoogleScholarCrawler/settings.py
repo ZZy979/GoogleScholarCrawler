@@ -52,8 +52,6 @@ DOWNLOAD_DELAY = 0.1
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
     'GoogleScholarCrawler.middlewares.HttpProxyMiddleware': 100,
-    'scrapy.downloadermiddlewares.downloadtimeout.DownloadTimeoutMiddleware': 200,
-    'scrapy.downloadermiddlewares.retry.RetryMiddleware': 300
 }
 
 # Enable or disable extensions
